@@ -1,4 +1,5 @@
 # coding: utf-8
+from __future__ import print_function
 import imaplib, email, os
 
 home_dir = os.path.expanduser('~')
@@ -13,9 +14,9 @@ SMTP_PORT   = 993
 mail = imaplib.IMAP4_SSL(SMTP_SERVER)
 mail.login(FROM_EMAIL,FROM_PWD)
 resp, count = mail.select("Police/lvmpd_stats")
-resp, data = mail.search(None, 'ALL')
-mail_ids = data[0]
-id_list = mail_ids.split()
+print('Found',count[0],'messages in folder. Downloading attachments and saving them to',data_dir)
+resp, data = mail.uid('search',None, 'ALL')
+id_list = data[0].split()
 
 for id in id_list:
     resp, data = mail.fetch(int(id), '(RFC822)' )
