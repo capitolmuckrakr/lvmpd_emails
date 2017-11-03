@@ -8,7 +8,7 @@ data_dir = home_dir + '/data/LVMPD/COM_CENTER_STATS'
 
 ORG_EMAIL = "@reviewjournal.com"
 FROM_EMAIL = "acohen" + ORG_EMAIL
-FROM_PWD = "Current.Biology"
+FROM_PWD = os.environ['RJGMAILPASSWORD']
 SMTP_SERVER = "imap.gmail.com"
 SMTP_PORT   = 993
 mail = imaplib.IMAP4_SSL(SMTP_SERVER)
