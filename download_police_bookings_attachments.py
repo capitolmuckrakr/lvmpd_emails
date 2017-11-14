@@ -7,7 +7,7 @@ home_dir = os.path.expanduser('~')
 data_dir = home_dir + '/data/LVMPD/BOOKINGS'
 
 ORG_EMAIL = "@reviewjournal.com"
-FROM_EMAIL = "acohen" + ORG_EMAIL
+FROM_EMAIL = os.environ['RJGMAILUSERNAME'] + ORG_EMAIL
 FROM_PWD = os.environ['RJGMAILPASSWORD']
 SMTP_SERVER = "imap.gmail.com"
 SMTP_PORT   = 993
