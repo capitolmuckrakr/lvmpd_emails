@@ -1,19 +1,23 @@
 file=$1
+n=1
 noheader=$2
-if [[ $noheader != '--no-header' ]]
+if [[ $noheader == '--no-header' ]]
 then
-    echo "filename|type|description|event_no|disp|time|address"
+    n=2
 fi
-
+schema='/Users/acohen/data/LVMPD/COM_CENTER_STATS/schema.csv'
 filename=$(echo $file | rev | cut -d '/' -f 1 | rev)
 OLDIFS=$IFS
 IFS=$'\n'
-for line in $(egrep -a '^\d' $file)
+
+for line in $(egrep -a '^\d' $file | in2csv -H -f fixed -s $schema)
     do
-    line_1=$(echo $line | awk '{sub(/ +/,"|")} {print $0}' | awk '{gsub(/  +/,"|")} {print $0}')
-    line_a=$(echo $line_1 | cut -d '|' -f 3 | awk '{sub(/ +/,"|")} {print $0}')
-    line_b=$(echo $line_1 | cut -d '|' -f 4 | awk '{sub(/ +/,"|")} {print $0}')
-    line_c=$(echo $line_1 | cut -d '|' -f 1,2)
-    echo $filename"|"$line_c"|"$line_a"|"$line_b | sed 's/\r//g' | cut -d '|' -f 1,2,3,4,5,6,7
+    if [[ $n == 1 ]]
+    then
+        echo 'filename,'$line | csvcut -c 1-7
+    else
+        echo $filename,$line | csvcut -c 1-7 | grep -v 'event_no'
+    fi
+    n=$((n + 1))
 done
 IFS=OLDIFS
