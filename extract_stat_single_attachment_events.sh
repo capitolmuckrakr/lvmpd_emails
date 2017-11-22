@@ -5,12 +5,12 @@ if [[ $noheader == '--no-header' ]]
 then
     n=2
 fi
-schema='/Users/acohen/data/LVMPD/COM_CENTER_STATS/schema.csv'
+schema=$HOME'/data/LVMPD/COM_CENTER_STATS/schema.csv'
 filename=$(echo $file | rev | cut -d '/' -f 1 | rev)
 OLDIFS=$IFS
 IFS=$'\n'
 
-for line in $(egrep -a '^\d' $file | in2csv -H -f fixed -s $schema)
+for line in $(egrep -a '^[0-9]' $file | in2csv -H -f fixed -s $schema)
     do
     if [[ $n == 1 ]]
     then
@@ -20,4 +20,4 @@ for line in $(egrep -a '^\d' $file | in2csv -H -f fixed -s $schema)
     fi
     n=$((n + 1))
 done
-IFS=OLDIFS
+IFS=$OLDIFS
