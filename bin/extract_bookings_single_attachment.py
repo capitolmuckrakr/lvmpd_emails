@@ -2,7 +2,7 @@ from __future__ import print_function
 from bs4 import BeautifulSoup
 import re, pandas as pd, sys, maya
 
-def extract(booking):
+def extract_booking(booking):
     booking_page = open(booking)
     soup = BeautifulSoup(booking_page,'html.parser')
     booking_date_text = soup.find_all('table')[0].find_all('td')[-1].text.split("'")[-2]
