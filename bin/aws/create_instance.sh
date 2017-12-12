@@ -2,7 +2,7 @@
 # You need to install the AWS Command Line Interface from http://aws.amazon.com/cli/
 export VPCID=$(aws ec2 describe-vpcs --filter "Name=isDefault, Values=true" --query "Vpcs[0].VpcId" --output text)
 export SUBNETID=$(aws ec2 describe-subnets --filters "Name=vpc-id, Values=$VPCID" --query "Subnets[0].SubnetId" --output text)
-export SGID=$(aws ec2 create-security-group --group-name emailsecuritygroup --description "LVMPD Postgres Security Group" --vpc-id $VPCID --output text)
+export SGID=$(aws ec2 create-security-group --group-name lvmpdsecuritygroup --description "LVMPD Postgres Security Group" --vpc-id $VPCID --output text)
 aws ec2 authorize-security-group-ingress --group-id $SGID --protocol tcp --port 5432 --cidr 0.0.0.0/0
 
 export INSTANCEID=$(aws rds create-db-instance \
