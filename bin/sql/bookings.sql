@@ -16,8 +16,8 @@ CREATE TABLE public.bookings
   arrest_officer text,
   fbi_code text,
   state_ text,
-  filename text
-  CONSTRAINT bookings_pk PRIMARY KEY (booking_date, row_id)
+  filename text,
+  PRIMARY KEY (booking_date, row_id)
 )
 WITH (
   OIDS=FALSE
