@@ -1,12 +1,10 @@
 from __future__ import print_function
 from bs4 import BeautifulSoup
-import re, pandas as pd, sys, maya
+import re, pandas as pd, sys
 
 def extract_booking(booking):
     booking_page = open(booking)
     soup = BeautifulSoup(booking_page,'html.parser')
-    booking_date_text = soup.find_all('table')[0].find_all('td')[-1].text.split("'")[-2]
-    booking_date = maya.parse(booking_date_text).datetime(naive=True)
     table = soup.find_all('table')[-1]
     table = [row for row in table][1]
     ws_fixer = re.compile(r"\s+")
@@ -41,8 +39,25 @@ def extract_booking(booking):
             previous = col
             new_col.append(col)
         t1[col_name] = new_col
-    return booking_date,t1
+    t1['Time'] = pd.to_datetime(t1['Booking_Date'] + ' ' + t1['Time'])
+    t1['Booking_Date'] = pd.to_datetime(t1['Booking_Date'])
+    t1.Charges.replace(ws_fixer," ",regex=True,inplace=True)
+    t1.Last_Name.replace(ws_fixer," ",regex=True,inplace=True)
+    t1.First_Name.replace(ws_fixer," ",regex=True,inplace=True)
+    t1.Middle_Name.replace(ws_fixer," ",regex=True,inplace=True)
+    if list(t1.Row.astype(int)) == list(t1.index):
+        del t1['Row']
+    col_names = {c:c.lower() for c in list(t1.columns)}
+    col_names['ID_Number'] = 'id'
+    col_names['S']='sex'
+    col_names['R']='race'
+    col_names['St']='state_'
+    col_names['Time']='booking_time'
+    t1.rename(columns=col_names,inplace=True)
+    t1['filename'] = booking.split('/')[-1]
+    return t1
     
 if __name__ == '__main__':
     booking_file = sys.argv[1]
-    booking_date, booking = extract(booking_file)
+    booking = extract_booking(booking_file)
+    print(booking.to_csv())
