@@ -3,17 +3,23 @@ from __future__ import print_function
 import imaplib, email, os
 
 home_dir = os.path.expanduser('~')
-
-data_dir = home_dir + '/data/LVMPD/BOOKINGS'
+if 'RJGMAILDATADIR' in os.environ:
+    data_dir = os.environ['RJGMAILDATADIR']
+else:
+    data_dir = home_dir + '/data/LVMPD/BOOKINGS'
 
 ORG_EMAIL = "@reviewjournal.com"
 FROM_EMAIL = os.environ['RJGMAILUSERNAME'] + ORG_EMAIL
 FROM_PWD = os.environ['RJGMAILPASSWORD']
 SMTP_SERVER = "imap.gmail.com"
 SMTP_PORT   = 993
+if 'RJGMAILFOLDER' in os.environ:
+    FOLDER = os.environ['RJGMAILFOLDER']
+else:
+    FOLDER = "Police/lvmpd_bookings_log"
 mail = imaplib.IMAP4_SSL(SMTP_SERVER)
 mail.login(FROM_EMAIL,FROM_PWD)
-resp, count = mail.select("Police/lvmpd_bookings_log")
+resp, count = mail.select(FOLDER)
 print('Found',count[0],'messages in folder. Downloading attachments and saving them to',data_dir)
 resp, data = mail.uid('search',None, 'ALL')
 id_list = data[0].split()
