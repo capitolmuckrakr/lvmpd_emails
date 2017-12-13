@@ -5,6 +5,6 @@ type text,
 description text,
 event_num text,
 disposition text,
-time time,
+event_time time,
 address text
 )
