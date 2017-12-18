@@ -21,8 +21,8 @@ def extract_booking(booking):
             t1.iat[row_marker,column_marker] = column.get_text()
             column_marker+=1
         row_marker+=1
-    t1['Booking_Date'] = t1['Booking_Date'][1]
-    columns_to_fill = ['Time', 'ID_Number', 'First_Name','S', 'R', 'Age', 'Charges', 'Type', 'Event_Number', 'Arrest_Officer','St','Last_Name', 'Middle_Name']# some values are not repeated across rows and need to be filled in
+    #t1['Booking_Date'] = t1['Booking_Date'][1]
+    columns_to_fill = ['Booking_Date','Time', 'ID_Number', 'First_Name','S', 'R', 'Age', 'Charges', 'Type', 'Event_Number', 'Arrest_Officer','St','Last_Name', 'Middle_Name']# some values are not repeated across rows and need to be filled in
     for col_name in columns_to_fill:
         col = ''
         previous = ''
