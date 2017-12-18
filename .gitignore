@@ -2,3 +2,4 @@ __pycache__/
 notebooks
 bin/sql/table.sql
 *.pyc
+logs/
