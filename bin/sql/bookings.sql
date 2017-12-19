@@ -19,7 +19,7 @@ CREATE TABLE public.bookings
   fbi_code text,
   state_ text,
   filename text,
-  filemd5 text
+  filemd5 text,
   PRIMARY KEY (filemd5, row_id)
 )
 WITH (
