@@ -2,6 +2,7 @@ CREATE TABLE public.bookings
 (
   row_id bigint NOT NULL,
   booking_date date NOT NULL,
+  arrest_date date,
   booking_time timestamp without time zone,
   id text,
   last_name text,
@@ -10,6 +11,7 @@ CREATE TABLE public.bookings
   sex text,
   race text,
   age text,
+  charge_date date,
   charges text,
   type text,
   event_number text,
@@ -17,7 +19,7 @@ CREATE TABLE public.bookings
   fbi_code text,
   state_ text,
   filename text,
-  PRIMARY KEY (booking_date, row_id)
+  PRIMARY KEY (filename, row_id)
 )
 WITH (
   OIDS=FALSE
