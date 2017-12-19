@@ -1,6 +1,7 @@
 # coding: utf-8
 from __future__ import print_function
 from extract_bookings_single_attachment import extract_booking
+from md5_for_file import md5_for_file
 from sqlalchemy import create_engine
 from sqlalchemy.exc import IntegrityError
 import os, sys, logging
@@ -16,6 +17,7 @@ conn = "postgresql://acohen:" + os.environ['PGPASSWORD'] + "@" + os.environ['END
 try:
     booking_file = sys.argv[1]
     booking = extract_booking(booking_file)
+    booking['filemd5'] = md5_for_file(booking_file)
     engine = create_engine(conn, echo=False)
     booking.to_sql('bookings',engine, if_exists='append',index_label='row_id')
 except IntegrityError:
