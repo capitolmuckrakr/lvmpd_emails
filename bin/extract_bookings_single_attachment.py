@@ -21,26 +21,29 @@ def extract_booking(booking):
             t1.iat[row_marker,column_marker] = column.get_text()
             column_marker+=1
         row_marker+=1
-    #t1['Booking_Date'] = t1['Booking_Date'][1]
-    columns_to_fill = ['Booking_Date','Time', 'ID_Number', 'First_Name','S', 'R', 'Age', 'Charges', 'Type', 'Event_Number', 'Arrest_Officer','St','Last_Name', 'Middle_Name']# some values are not repeated across rows and need to be filled in
+    columns_to_fill = ['Booking_Date','Arrest_Date','Time', 'ID_Number', 'First_Name','S', 'R', 'Age', 'Charge_Date','Charges', 'Type', 'Event_Number', 'Arrest_Officer','St','Last_Name', 'Middle_Name']# some values are not repeated across rows and need to be filled in
     for col_name in columns_to_fill:
         col = ''
         previous = ''
         new_col = []
-        for i,x in t1[col_name].iteritems():
-            if x == '':
-                if not col_name in ['Last_Name', 'Middle_Name']:
-                    x = previous
-                else:
-                    if not previous == '':
-                        if t1.loc[i,'First_Name'] == t1.loc[i - 1,'First_Name']:
-                            x = previous
-            col = x
-            previous = col
-            new_col.append(col)
-        t1[col_name] = new_col
+        if col_name in t1.columns:
+            for i,x in t1[col_name].iteritems():
+                if x == '':
+                    if not col_name in ['Last_Name', 'Middle_Name']:
+                        x = previous
+                    else:
+                        if not previous == '':
+                            if t1.loc[i,'First_Name'] == t1.loc[i - 1,'First_Name']:
+                                x = previous
+                col = x
+                previous = col
+                new_col.append(col)
+            t1[col_name] = new_col
     t1['Time'] = pd.to_datetime(t1['Booking_Date'] + ' ' + t1['Time'])
     t1['Booking_Date'] = pd.to_datetime(t1['Booking_Date'])
+    for option_col in ['Arrest_Date','Charge_Date']:
+        if option_col in t1.columns:
+            t1[option_col] = pd.to_datetime(t1[option_col])
     t1.Charges.replace(ws_fixer," ",regex=True,inplace=True)
     t1.Last_Name.replace(ws_fixer," ",regex=True,inplace=True)
     t1.First_Name.replace(ws_fixer," ",regex=True,inplace=True)
