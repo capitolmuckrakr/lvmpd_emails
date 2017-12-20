@@ -3,3 +3,4 @@ notebooks
 bin/sql/table.sql
 *.pyc
 logs/
+bin/extract_stat_single_attachment_events.py
