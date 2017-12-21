@@ -5,11 +5,11 @@ export last_booking=$(psql --host=${ENDPOINT} --port=5432 --username=acohen --db
 export bookings_count=$(ls ~/data/LVMPD/BOOKINGS/*ITAG*ALL*.htm | wc -l)
 export bookings_loaded_count=$(ls ~/data/LVMPD/BOOKINGS/*ITAG*ALL*.htm | grep -n $last_booking | cut -d ':' -f 1)
 export bookings_unloaded_count=$(python -c 'import os; print int(os.environ["bookings_count"])-int(os.environ["bookings_loaded_count"])')
-export OLDIFS=$IFS
-export IFS='\n'
+OLDIFS=$IFS
+IFS=$'\n'
 for booking in $(ls ~/data/LVMPD/BOOKINGS/*ITAG*ALL*.htm | tail -n $bookings_unloaded_count)
 do
-echo 'loading $booking'
+echo 'loading' $booking
 ipython load_booking_to_sql.py $booking
 done
-export IFS=OLDIFS
+IFS=OLDIFS
