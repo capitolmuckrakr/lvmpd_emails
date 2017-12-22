@@ -1,3 +1,3 @@
 #!/bin/bash
-ipython download_police_bookings_attachments.py 2>>../logs/bookings_errs.log
+ipython download_police_bookings_attachments.py
 ./load_new_bookings_to_sql.sh
