@@ -9,8 +9,13 @@ HOME = os.environ['HOME']
 
 log_dir = HOME + '/scripts/lvmpd_emails/logs/'
 db_log_file_name = log_dir + 'bookings_errs.log'
-logging.basicConfig(filename=db_log_file_name, level=logging.WARN, format='%(asctime)s %(message)s')
-logging.getLogger('sqlalchemy.engine').setLevel(logging.WARN)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger('load_booking_to_sql')
+handler = logging.FileHandler(db_log_file_name)
+handler.setLevel(logging.WARN)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 conn = "postgresql://acohen:" + os.environ['PGPASSWORD'] + "@" + os.environ['ENDPOINT'] + ":5432/lvmetro"
 
@@ -21,8 +26,6 @@ try:
     engine = create_engine(conn, echo=False)
     booking.to_sql('bookings',engine, if_exists='append',index_label='row_id')
 except IntegrityError:
-    print('Error loading',booking_file)
-    logging.error('IntegrityError loading %s',booking_file)
-except Exception as e:
-    print('Error loading',booking_file,e)
-    logging.error('Error loading %s',booking_file + ', ' + str(e))
+    logger.error('IntegrityError loading %s',booking_file)
+except Exception, e:
+    logger.error('Error loading %s',booking_file, exc_info=True)
