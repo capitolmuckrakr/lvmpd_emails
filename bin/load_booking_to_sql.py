@@ -24,6 +24,7 @@ try:
     booking = extract_booking(booking_file)
     booking['filemd5'] = md5_for_file(booking_file)
     engine = create_engine(conn, echo=False)
+    logger.info('loading %s',booking_file)
     booking.to_sql('bookings',engine, if_exists='append',index_label='row_id')
 except IntegrityError:
     logger.error('IntegrityError loading %s',booking_file)
