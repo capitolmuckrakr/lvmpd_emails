@@ -10,7 +10,6 @@ OLDIFS=$IFS
 IFS=$'\n'
 for booking in $(ls ~/data/LVMPD/BOOKINGS/*$yr-ITAG-ALL*.htm | tail -n $bookings_unloaded_count)
 do
-echo 'loading' $booking
 ipython load_booking_to_sql.py $booking
 done
 IFS=OLDIFS
