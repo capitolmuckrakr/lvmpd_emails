@@ -1,7 +1,7 @@
 DIR_PATH=$1
 cd $DIR_PATH
 echo "filename|filedate|filetime|eventdate|starttime|endtime"
-for file in *.TXT
+for filename in *.TXT
     do
     filedate=$(head -1 $file | cut -d ':' -f 3 | sed -e 's/^[ ]*//g' | sed -e 's/ /\|/g' | cut -d '|' -f 1)
     filetime=$(head -1 $file | cut -d ':' -f 4,5 | sed -e 's/^[ ]*//g' | sed -e 's/ /\|/g' | cut -d '|' -f 1)
