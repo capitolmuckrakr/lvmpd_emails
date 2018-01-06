@@ -1,5 +1,5 @@
 CREATE TABLE event_times (
-pk bigint primary key,
+pk bigserial primary key,
 filename text,
 filedate date,
 filetime time,
