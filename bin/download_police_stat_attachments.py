@@ -42,7 +42,10 @@ try:
     
     for id in id_list:
         resp, data = mail.fetch(int(id), '(RFC822)' )
-        email_body = data[0][1]
+        try:
+            email_body = data[0][1]
+        except Exception,e:
+            logger.error('Problem reading message %s,',id, exc_info=True)
         m = email.message_from_string(email_body)
         if m.get_content_maintype() != 'multipart':
             continue
