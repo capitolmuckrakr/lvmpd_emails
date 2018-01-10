@@ -19,18 +19,24 @@ try:
         previous_messages_count = oldcount.read().strip()
 except Exception, e:
     logger.warn('Problem fetching previous stat count,', exc_info=True)
-
-data_dir = home_dir + '/data/LVMPD/COM_CENTER_STATS'
+if 'RJGMAILDATADIR' in os.environ:
+    data_dir = os.environ['RJGMAILDATADIR']
+else:
+    data_dir = home_dir + '/data/LVMPD/COM_CENTER_STATS'
 
 ORG_EMAIL = "@reviewjournal.com"
 FROM_EMAIL = os.environ['RJGMAILUSERNAME'] + ORG_EMAIL
 FROM_PWD = os.environ['RJGMAILPASSWORD']
 SMTP_SERVER = "imap.gmail.com"
 SMTP_PORT   = 993
+if 'RJGMAILFOLDER' in os.environ:
+    FOLDER = os.environ['RJGMAILFOLDER']
+else:
+    FOLDER = "Police/lvmpd_stats"
 mail = imaplib.IMAP4_SSL(SMTP_SERVER)
-mail.login(FROM_EMAIL,FROM_PWD)
 try:
-    resp, count = mail.select("Police/lvmpd_stats")
+    mail.login(FROM_EMAIL,FROM_PWD)
+    resp, count = mail.select(FOLDER)
     logger.info('Found %s messages in folder. Downloading attachments and saving them to %s',count[0],data_dir)
     if int(count[0]) <= int(previous_messages_count):
         logger.warn('Current message count of %s should be greater than old message count of %s. Stat files may be missing.',count[0],previous_messages_count)
