@@ -43,7 +43,7 @@ try:
     else:
         with open(previous_messages_count_log_name,'w') as oldcount:
             oldcount.write(count[0])
-    resp, data = mail.uid('search',None, 'ALL')
+    resp, data = mail.search(None, 'ALL')
     id_list = data[0].split()
     
     for id in id_list:
