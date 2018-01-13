@@ -10,7 +10,7 @@ AS
     ("substring"(t1.event_num, 4, 6)::integer::text || "substring"(t1.event_num, 10, 10)::integer::text)::bigint AS bookings_event_num
    FROM events t1
      JOIN event_times t2 USING (filename)
-     JOIN lk_dispositioncodes t3 ON t1.disposition = t3.code::text
+     LEFT JOIN lk_dispositioncodes t3 ON t1.disposition = t3.code::text
   ORDER BY t1.event_num DESC
 WITH DATA;
 
