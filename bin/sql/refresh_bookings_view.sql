@@ -1,0 +1,1 @@
+REFRESH MATERIALIZED VIEW public.bookings_view;
