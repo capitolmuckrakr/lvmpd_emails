@@ -1,0 +1,1 @@
+REFRESH MATERIALIZED VIEW public.child_related_bookings_in_last_week;
