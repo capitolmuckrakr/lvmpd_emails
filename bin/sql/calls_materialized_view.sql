@@ -3,7 +3,7 @@ AS
  SELECT t1.event_num AS eventnum,
     t1.type,
     t1.description,
-    t3.definition,
+    t3.definition AS disposition,
     t1.address,
     t1.event_time AS eventtime,
     t2.eventdate,
